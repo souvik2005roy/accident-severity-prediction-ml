@@ -745,20 +745,20 @@ elif page == "📊 Model Insights":
         plt.tight_layout()
 
         st.pyplot(fig)
-# --------------------------------------------------
-# CONFUSION MATRIX
-# --------------------------------------------------
+    # --------------------------------------------------
+    # CONFUSION MATRIX
+    # --------------------------------------------------
 
-st.subheader("Confusion Matrix")
+    st.subheader("Confusion Matrix")
 
-if os.path.exists(CONFUSION_MATRIX_PATH):
-    st.image(
-        CONFUSION_MATRIX_PATH,
-        caption="Final Random Forest Confusion Matrix",
-        use_container_width=True
-    )
-else:
-    st.warning("Confusion matrix image not found.")
+    if os.path.exists(CONFUSION_MATRIX_PATH):
+        st.image(
+            CONFUSION_MATRIX_PATH,
+            caption="Final Random Forest Confusion Matrix",
+            use_container_width=True
+        )
+    else:
+        st.warning("Confusion matrix image not found.")
     # --------------------------------------------------------
     # MODEL DESCRIPTION
     # --------------------------------------------------------
