@@ -20,11 +20,26 @@ st.set_page_config(
 # PATHS
 # ============================================================
 
-MODEL_PATH = "outputs/final_accident_severity_model.pkl"
-DATA_PATH = "data/ETP_4_New_Data_Accidents.csv"
-FEATURE_IMPORTANCE_PATH = "outputs/final_feature_importance.csv"
-CONFUSION_MATRIX_PATH = "outputs/figures/final_confusion_matrix.png"
-
+MODEL_PATH = os.path.join(
+    BASE_DIR,
+    "outputs",
+    "final_accident_severity_model.pkl"
+)
+DATA_PATH = os.path.join(
+    BASE_DIR,
+    "data",
+    "ETP_4_New_Data_Accidents.csv"
+)
+FEATURE_IMPORTANCE_PATH = os.path.join(
+    BASE_DIR,
+    "outputs",
+    "final_feature_importance.csv"
+)
+CONFUSION_MATRIX_PATH = os.path.join(
+    BASE_DIR,
+    "outputs",
+    "random_forest_confusion_matrix.png"
+)
 
 # ============================================================
 # LOAD MODEL
@@ -723,57 +738,20 @@ elif page == "📊 Model Insights":
         plt.tight_layout()
 
         st.pyplot(fig)
+# --------------------------------------------------
+# CONFUSION MATRIX
+# --------------------------------------------------
 
+st.subheader("Confusion Matrix")
 
-    # --------------------------------------------------
-    # CONFUSION MATRIX
-    # --------------------------------------------------
-
-    st.subheader("Confusion Matrix")
-
-    try:
-        # Load test data
-        X_test = pd.read_csv("data/processed/X_test.csv")
-        y_test = pd.read_csv("data/processed/y_test.csv").squeeze()
-
-        # Load final model
-        model = joblib.load(
-            "outputs/final_accident_severity_model.pkl"
-        )
-
-        # Generate predictions
-        y_pred = model.predict(X_test)
-
-        # Create confusion matrix
-        cm = confusion_matrix(
-            y_test,
-            y_pred,
-            labels=[1, 2, 3, 4]
-        )
-
-        # Display matrix
-        fig, ax = plt.subplots(figsize=(7, 5))
-
-        disp = ConfusionMatrixDisplay(
-            confusion_matrix=cm,
-            display_labels=[1, 2, 3, 4]
-        )
-
-        disp.plot(
-            ax=ax,
-            cmap="viridis",
-            values_format="d"
-        )
-
-        ax.set_title("Final Random Forest Confusion Matrix")
-        ax.set_xlabel("Predicted Severity")
-        ax.set_ylabel("Actual Severity")
-
-        st.pyplot(fig)
-
-    except Exception as e:
-        st.error(f"Could not generate confusion matrix: {e}")
-
+if os.path.exists(CONFUSION_MATRIX_PATH):
+    st.image(
+        CONFUSION_MATRIX_PATH,
+        caption="Final Random Forest Confusion Matrix",
+        use_container_width=True
+    )
+else:
+    st.warning("Confusion matrix image not found.")
     # --------------------------------------------------------
     # MODEL DESCRIPTION
     # --------------------------------------------------------
